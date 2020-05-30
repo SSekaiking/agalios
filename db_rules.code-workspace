@@ -1,0 +1,20 @@
+{
+    "rules": {
+        "room_names": {
+            ".read": true,
+            "$room_id": {
+                ".validate": "newData.isString()"
+            }
+        },
+        "streams": {
+            ".read": true,
+            "$user_id": {
+                ".write": "$user_id === auth.$uid",
+                "$room_id": {
+                    ".validate": "root.child('room_names/'+$room_id).exists() && newData.hasChildren(['user', 'paused', 'time'])",
+                    ".write": "!data.exists() && newData.exists()",
+                }
+            }
+        }
+    }
+}
